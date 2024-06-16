@@ -1,11 +1,6 @@
-import math
-
-import numpy as np
 import torch
 import torch.nn as nn
 from timm.models.vision_transformer import Block
-
-
 
 
 class EEGEncoder(nn.Module):
@@ -41,7 +36,7 @@ class EEGEncoder(nn.Module):
             self.lstm = nn.LSTM(input_size=64, hidden_size=64, bidirectional=False, num_layers=num_layers // 2)
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(512, 512),
+            nn.Linear(time_len * 64 // (2 ** 5), 512),
         )
 
     def forward(self, x):
@@ -65,12 +60,13 @@ class EEGEncoder(nn.Module):
         return x
 
 
-
 if __name__ == '__main__':
-    eeg_encoder = EEGEncoder()
+    bs = 8
+    channels = 20
+    time_len = 512
+    eeg_encoder = EEGEncoder(num_channels=channels,time_len=time_len)
 
-    eeg = torch.randn((3, 8, 256))
+    eeg = torch.randn((bs, channels, time_len))
     print(eeg.shape)
     out = eeg_encoder(eeg)
     print(out.shape)
-
