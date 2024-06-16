@@ -21,6 +21,3 @@ This project requires Python 3.7. To set up the environment, you can use the pro
     pip install -r requirements.txt
     ```
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
